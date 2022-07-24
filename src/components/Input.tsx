@@ -1,10 +1,30 @@
-import { Input as NativeBaseInput, IInputProps } from 'native-base';
+import { Input as NativeBaseInput, IInputProps, useTheme } from 'native-base';
 
-export function Input({...rest}: IInputProps) {
-  return (
-    <NativeBaseInput bg='gray.700' h={14} size='md' borderWidth={0}
-    fontSize='md' fontFamily='body' color='white' placeholderTextColor='gray.300' {...rest}  _focus={{borderWidth: 1, borderColor: 'green.500', bg:'gray.700'}} >
+type Props = IInputProps & {
+    error?: boolean;
+    showError?: boolean;
+};
 
-    </NativeBaseInput>
-  );
+export function Input({ error, showError, ...rest }: Props) {
+    const { colors } = useTheme();
+
+    return (
+        <NativeBaseInput
+            bg='gray.700'
+            h={14}
+            size='md'
+            borderWidth={error && showError ? 1 : 0}
+            borderColor={error && showError ? colors.red[500] : 'none'}
+            fontSize='md'
+            fontFamily='body'
+            color='white'
+            placeholderTextColor='gray.300'
+            _focus={{
+                borderWidth: 1,
+                borderColor: error && showError ? colors.red[500] : 'green.500',
+                bg: 'gray.700'
+            }}
+            {...rest}
+        ></NativeBaseInput>
+    );
 }

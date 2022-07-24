@@ -1,10 +1,10 @@
 import { Text, Button, IButtonProps, useTheme } from 'native-base';
-import { requestType } from '../shared/types';
+import { RequestType } from '../shared/types';
 
 type Props = IButtonProps & {
     title: string;
     isActive?: boolean;
-    type: requestType;
+    type: RequestType;
 };
 
 export function Filter({ title, isActive = false, type, ...rest }: Props) {

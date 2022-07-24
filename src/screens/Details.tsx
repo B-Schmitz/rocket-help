@@ -2,12 +2,12 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { HStack, useTheme, VStack, Text, ScrollView, Box } from 'native-base';
 import { useEffect, useState } from 'react';
 import { Header } from '../components/Header';
-import { OrderProps } from '../shared/types';
+import { OrderProps, ToastSuccess } from '../shared/types';
 import firestore from '@react-native-firebase/firestore';
 import { OrderFirestoneDTO } from '../DTOs/OrderFirestoneDTO';
 import { dateFormat } from '../utils/firestoreDateFormats';
 import Loading from '../components/Loading';
-import { CircleWavyCheck, Clipboard, DesktopTower, Hourglass } from 'phosphor-react-native';
+import { CircleWavyCheck, ClipboardText, DesktopTower, Hourglass } from 'phosphor-react-native';
 import { CardDetails } from '../components/CardDetails';
 import { Input } from '../components/Input';
 import { Button } from '../components/Button';
@@ -30,12 +30,15 @@ export function Details() {
     const route = useRoute();
     const { orderId } = route.params as RouteParams;
 
+    const [showError, setShowError] = useState(false);
+
     const navigation = useNavigation();
     const { colors } = useTheme();
 
     const handleOrderClose = () => {
         if (!solution) {
-            return Alert.alert('Atenção', 'Informe uma solução para encerrar a solicitação.');
+            setShowError(true);
+            return;
         }
 
         firestore()
@@ -47,7 +50,11 @@ export function Details() {
                 closed_at: firestore.FieldValue.serverTimestamp()
             })
             .then(() => {
-                Alert.alert('Sucesso', 'Solicitação encerrada.');
+                toast.show('Solicitação encerrada com sucesso.', {
+                    icon: <CircleWavyCheck color={colors.green[200]} />,
+
+                    ...ToastSuccess
+                });
                 navigation.goBack();
             })
             .catch(error => {
@@ -107,23 +114,27 @@ export function Details() {
             <ScrollView mx={5} showsVerticalScrollIndicator={false}>
                 <CardDetails
                     title={'Equipamento'}
-                    icon={DesktopTower}
                     description={`Patrimônio ${order.patrimony}`}
-                    footer={order.when}
+                    icon={DesktopTower}
                 ></CardDetails>
                 <CardDetails
                     title={'Descrição do problema'}
-                    icon={Clipboard}
                     description={order.description}
+                    icon={ClipboardText}
+                    iconColor={'white'}
+                    footer={`Registrado em ${order.when}`}
                 ></CardDetails>
                 <CardDetails
                     title={'Solução'}
-                    icon={CircleWavyCheck}
                     description={order.solution}
+                    icon={CircleWavyCheck}
+                    iconColor={colors.green[300]}
                     footer={order.closed && `Encerado em ${order.closed}`}
                 >
                     {order.status === 'open' && (
                         <Input
+                            error={!solution}
+                            showError={showError}
                             placeholder='Descrição da solução...'
                             onChangeText={setSolution}
                             h={24}

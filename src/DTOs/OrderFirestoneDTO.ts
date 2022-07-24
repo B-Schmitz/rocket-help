@@ -1,10 +1,10 @@
 import { FirebaseFirestoreTypes } from "@react-native-firebase/firestore";
-import { requestType } from "../shared/types";
+import { RequestType } from "../shared/types";
 
 export type OrderFirestoneDTO = {
     patrimony: string;
     description: string;
-    status: requestType;
+    status: RequestType;
     solution?: string;
     created_at: FirebaseFirestoreTypes.Timestamp
     closed_at?: FirebaseFirestoreTypes.Timestamp

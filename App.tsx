@@ -6,14 +6,19 @@ import { THEME } from './src/styles/theme';
 
 import { Routes } from './src/routes';
 import Loading from './src/components/Loading';
+import { ToastProvider } from 'react-native-toast-notifications';
+import Toast from 'react-native-toast-notifications';
 
 export default function App() {
     const [fontsLoaded] = useFonts({ Roboto_400Regular, Roboto_700Bold });
 
     return (
-        <NativeBaseProvider theme={THEME}>
-            <StatusBar barStyle='light-content' backgroundColor={'transparent'} translucent />
-            {fontsLoaded ? <Routes /> : <Loading />}
-        </NativeBaseProvider>
+        <ToastProvider>
+            <NativeBaseProvider theme={THEME}>
+                <StatusBar barStyle='light-content' backgroundColor={'transparent'} translucent />
+                {fontsLoaded ? <Routes /> : <Loading />}
+            </NativeBaseProvider>
+            <Toast ref={ref => (global['toast'] = ref)} />
+        </ToastProvider>
     );
 }

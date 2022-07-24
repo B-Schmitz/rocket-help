@@ -8,7 +8,7 @@ import Logo from '../assets/logo_secondary.svg';
 import { Button } from '../components/Button';
 import { Filter } from '../components/Filter';
 import { Order } from '../components/Order';
-import { OrderProps, requestType } from '../shared/types';
+import { OrderProps, RequestType } from '../shared/types';
 import firestore from '@react-native-firebase/firestore';
 import { dateFormat } from '../utils/firestoreDateFormats';
 import Loading from '../components/Loading';
@@ -16,7 +16,7 @@ import Loading from '../components/Loading';
 export function Home() {
     const { colors } = useTheme();
     const [isLoading, setIsLoading] = useState(true);
-    const [statusSelected, setStatusSelected] = useState<requestType>('open');
+    const [statusSelected, setStatusSelected] = useState<RequestType>('open');
     const [orders, setOrders] = useState<OrderProps[]>([]);
 
     const navigation = useNavigation();
@@ -105,7 +105,7 @@ export function Home() {
             <VStack flex={1} px={6}>
                 <HStack w='full' mt={8} mb={4} justifyContent='space-between' alignItems='center'>
                     <Heading color='gray.100'>Solicitações</Heading>
-                    <Text color='gray.200'>3 </Text>
+                    <Text color='gray.200'>{orders.length}</Text>
                 </HStack>
                 <HStack space={3} mb={8}>
                     <Filter

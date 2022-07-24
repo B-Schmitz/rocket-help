@@ -14,9 +14,12 @@ export default function SignIn() {
     const [password, setPassword] = useState('');
     const [isLoading, setIsLoading] = useState(false);
 
+    const [showError, setShowError] = useState(false);
+
     const handleSignIn = () => {
         if (!email || !password) {
-            return Alert.alert('Atenção,', 'E-mail, ou senha não podem ser vazios.');
+            setShowError(true);
+            return;
         }
         setIsLoading(true);
 
@@ -47,12 +50,16 @@ export default function SignIn() {
 
             <Input
                 mb={5}
+                error={!email}
+                showError={showError}
                 placeholder='E-mail'
                 InputLeftElement={<Icon as={<Envelope color={colors.gray[300]} />} ml={4} />}
                 onChangeText={setEmail}
             />
             <Input
                 mb={8}
+                error={!password}
+                showError={showError}
                 onChangeText={setPassword}
                 secureTextEntry
                 placeholder='Senha'
