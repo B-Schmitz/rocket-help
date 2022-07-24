@@ -9,7 +9,7 @@ import {
     IPressableProps
 } from 'native-base';
 import { CircleWavyCheck, ClockAfternoon, Hourglass } from 'phosphor-react-native';
-import { OrderProps, requestType } from '../shared/types';
+import { OrderProps } from '../shared/types';
 
 type Props = IPressableProps & {
     data: OrderProps;
